@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+_In development._
+
+- (planned) New components: `NixtCalendar`, `NixtNumberPad`, `NixtStat`,
+  `NixtTimeline`, `NixtCarousel`, `NixtSpinner`, `NixtSteps`.
+
 ## 0.1.0
 
 Initial release — a Flutter port of the Nuxt UI v4 mobile design system.

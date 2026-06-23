@@ -3,7 +3,7 @@ description: >-
   Nixt UI — a faithful Flutter port of the Nuxt UI v4 mobile design system.
   Signature green, 7 semantic color roles, switchable neutral palettes,
   light/dark via ThemeExtension, Lucide icons, Poppins type. Zero third-party deps.
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/firmino2611/nixt_ui
 repository: https://github.com/firmino2611/nixt_ui
 issue_tracker: https://github.com/firmino2611/nixt_ui/issues
