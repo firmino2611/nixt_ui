@@ -1,0 +1,20 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+pubspec.lock
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Local design-system reference — not part of the published package
+claude_desing/
+scratch/
+
+# Lucide CSS is only a glyph-name reference; runtime uses lucide.ttf
+assets/fonts/lucide.css

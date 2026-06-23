@@ -1,0 +1,60 @@
+name: nixt_ui
+description: >-
+  Nixt UI — a faithful Flutter port of the Nuxt UI v4 mobile design system.
+  Signature green, 7 semantic color roles, switchable neutral palettes,
+  light/dark via ThemeExtension, Lucide icons, Poppins type. Zero third-party deps.
+version: 0.1.0
+homepage: https://github.com/firmino2611/nixt_ui
+repository: https://github.com/firmino2611/nixt_ui
+issue_tracker: https://github.com/firmino2611/nixt_ui/issues
+topics:
+  - ui
+  - design-system
+  - widgets
+  - theme
+  - components
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  # ---- Bundled fonts (OFL-licensed, redistributable) ----
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/JetBrainsMono-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/JetBrainsMono-Bold.ttf
+          weight: 700
+    # ---- Lucide icon font (maps IconData -> glyphs) ----
+    - family: LucideIcons
+      fonts:
+        - asset: assets/fonts/lucide.ttf
