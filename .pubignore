@@ -1,0 +1,14 @@
+# Excluded from the published package (kept in the GitHub repo).
+# pub.dev renders README images by resolving relative paths against the repo,
+# so screenshots don't need to ship inside the package archive.
+screenshots/
+
+# Build / tooling (also in .gitignore)
+.dart_tool/
+build/
+pubspec.lock
+
+# Local design-system reference
+claude_desing/
+scratch/
+assets/fonts/lucide.css

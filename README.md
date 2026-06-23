@@ -19,6 +19,20 @@ SDK + Dart only).
 
 > Minimum: Flutter 3.19 / Dart 3.3.
 
+## Screenshots
+
+From the [`example/`](example/) gallery (iPhone 16 Pro):
+
+<p align="center">
+  <img src="screenshots/home_light.png" width="220" alt="Catalog — light" />
+  <img src="screenshots/home_dark.png" width="220" alt="Catalog — dark" />
+  <img src="screenshots/buttons.png" width="220" alt="Buttons" />
+</p>
+<p align="center">
+  <img src="screenshots/cards.png" width="220" alt="Cards & data" />
+  <img src="screenshots/navigation.png" width="220" alt="Navigation — app bars, tabs" />
+</p>
+
 ## Install
 
 ```yaml
