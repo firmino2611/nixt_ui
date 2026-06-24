@@ -1,11 +1,21 @@
 # Changelog
 
+## 0.3.0
+
+Seven new components, all theme-driven and light/dark aware.
+
+### Components
+- **Forms** — `NixtCalendar` (month-grid date picker with prev/next paging) and
+  `NixtNumberPad` (3-column numeric keypad for PINs and amounts).
+- **Data** — `NixtStat` (metric + delta with inferred trend arrow), `NixtTimeline`
+  (vertical status feed with filled/dashed markers), and `NixtCarousel`
+  (swipeable full-width pager with synced page dots).
+- **Feedback** — `NixtSpinner` (standalone loading ring; slows for reduced motion).
+- **Navigation** — `NixtSteps` (horizontal step indicator for multi-step flows).
+
 ## 0.2.0
 
-_In development._
-
-- (planned) New components: `NixtCalendar`, `NixtNumberPad`, `NixtStat`,
-  `NixtTimeline`, `NixtCarousel`, `NixtSpinner`, `NixtSteps`.
+Maintenance release.
 
 ## 0.1.0
 

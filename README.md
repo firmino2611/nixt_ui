@@ -10,7 +10,7 @@ SDK + Dart only).
   switchable neutral palettes (slate / zinc / neutral / stone), single-token
   radius scale.
 - 🌗 **Light & dark** out of the box, plus per-app brand-color overrides.
-- 🧩 **40+ components** across buttons, forms, data, feedback, navigation and
+- 🧩 **45+ components** across buttons, forms, data, feedback, navigation and
   overlays — each a typed, purely-visual widget (no navigation or global state).
 - 🔤 **Bundled fonts** — Poppins, JetBrains Mono, and the full Lucide icon set
   (1,986 glyphs).
@@ -37,7 +37,7 @@ From the [`example/`](example/) gallery (iPhone 16 Pro):
 
 ```yaml
 dependencies:
-  nixt_ui: ^0.1.0
+  nixt_ui: ^0.3.0
 ```
 
 ```dart
@@ -126,10 +126,10 @@ NixtMenu(trigger: ..., items: [...]);
 |-------|-----------|
 | **Buttons** | `NixtButton`, `NixtIconButton`, `NixtFab` |
 | **Icon** | `NixtIcon` (+ `NixtIcons`, 1,986 Lucide glyphs) |
-| **Forms** | `NixtInput`, `NixtTextarea`, `NixtSelect`, `NixtMultiSelect`, `NixtCheckbox`, `NixtRadio`, `NixtSwitch`, `NixtSlider`, `NixtStepper`, `NixtRating`, `NixtPinInput`, `NixtSearchBar` |
-| **Data** | `NixtCard`, `NixtBadge`, `NixtChip`, `NixtDivider`, `NixtProgress`, `NixtAvatar`, `NixtAvatarGroup`, `NixtListItem`, `NixtAccordion` |
-| **Feedback** | `NixtAlert`, `NixtEmptyState`, `NixtSkeleton`, `NixtToast` |
-| **Navigation** | `NixtAppBar`, `NixtBottomNav`, `NixtTabs`, `NixtPageIndicator` |
+| **Forms** | `NixtInput`, `NixtTextarea`, `NixtSelect`, `NixtMultiSelect`, `NixtCheckbox`, `NixtRadio`, `NixtSwitch`, `NixtSlider`, `NixtStepper`, `NixtRating`, `NixtPinInput`, `NixtSearchBar`, `NixtCalendar`, `NixtNumberPad` |
+| **Data** | `NixtCard`, `NixtBadge`, `NixtChip`, `NixtDivider`, `NixtProgress`, `NixtAvatar`, `NixtAvatarGroup`, `NixtListItem`, `NixtAccordion`, `NixtStat`, `NixtTimeline`, `NixtCarousel` |
+| **Feedback** | `NixtAlert`, `NixtEmptyState`, `NixtSkeleton`, `NixtToast`, `NixtSpinner` |
+| **Navigation** | `NixtAppBar`, `NixtBottomNav`, `NixtTabs`, `NixtPageIndicator`, `NixtSteps` |
 | **Overlay** | `showNixtSheet`, `showNixtActionSheet`, `showNixtDialog`, `NixtMenu` |
 
 ## Theming

@@ -283,6 +283,86 @@ class _CardsScreenState extends State<CardsScreen> {
             ),
           ),
           const GallerySection(
+            title: 'Stat',
+            child: NixtCard(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: NixtStat(
+                      icon: NixtIcons.trendingUp,
+                      value: '\$12.4k',
+                      label: 'Revenue',
+                      delta: '+12%',
+                    ),
+                  ),
+                  Expanded(
+                    child: NixtStat(
+                      icon: NixtIcons.star,
+                      color: NixtColorRole.info,
+                      value: '2,318',
+                      label: 'Users',
+                      delta: '-3%',
+                    ),
+                  ),
+                  Expanded(
+                    child: NixtStat(
+                      value: '98.2%',
+                      label: 'Uptime',
+                      align: NixtStatAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const GallerySection(
+            title: 'Timeline',
+            child: NixtCard(
+              child: NixtTimeline(
+                items: [
+                  NixtTimelineItem(
+                    title: 'Order placed',
+                    time: '9:41 AM',
+                    description: 'Payment confirmed via Apple Pay.',
+                    icon: NixtIcons.check,
+                  ),
+                  NixtTimelineItem(
+                    title: 'Packed',
+                    time: '11:20 AM',
+                    color: NixtColorRole.info,
+                  ),
+                  NixtTimelineItem(
+                    title: 'Out for delivery',
+                    description: 'Arrives by 6 PM today.',
+                    done: false,
+                  ),
+                  NixtTimelineItem(title: 'Delivered', done: false),
+                ],
+              ),
+            ),
+          ),
+          GallerySection(
+            title: 'Carousel',
+            child: NixtCarousel(
+              height: 160,
+              slides: [
+                for (final (label, role) in _roles.take(4))
+                  Container(
+                    color: context.nixt.colors.role(role),
+                    alignment: Alignment.center,
+                    child: Text(
+                      label,
+                      style: const TextStyle(
+                        color: NixtPalette.white,
+                        fontSize: NixtTypography.textXl,
+                        fontWeight: NixtTypography.weightBold,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const GallerySection(
             title: 'Accordion',
             child: NixtCard(
               child: NixtAccordion(

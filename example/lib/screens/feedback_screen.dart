@@ -149,6 +149,22 @@ class FeedbackScreen extends StatelessWidget {
               ],
             ),
           ),
+          const GallerySection(
+            title: 'Spinner',
+            child: NixtCard(
+              child: Wrap(
+                spacing: NixtSpacing.s5,
+                runSpacing: NixtSpacing.s4,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  NixtSpinner(size: 18),
+                  NixtSpinner(),
+                  NixtSpinner(size: 32, color: NixtColorRole.info),
+                  NixtSpinner(size: 40, color: NixtColorRole.neutral),
+                ],
+              ),
+            ),
+          ),
           GallerySection(
             title: 'Empty state',
             child: NixtCard(

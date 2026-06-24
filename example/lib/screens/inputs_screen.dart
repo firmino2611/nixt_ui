@@ -20,6 +20,8 @@ class _InputsScreenState extends State<InputsScreen> {
   int _qty = 2;
   int _stars = 3;
   String _pin = '';
+  DateTime? _calDate = DateTime.now();
+  String _amount = '';
   final TextEditingController _search = TextEditingController();
 
   @override
@@ -204,6 +206,45 @@ class _InputsScreenState extends State<InputsScreen> {
             child: NixtTextarea(
               hintText: 'Write a note…',
               rows: 4,
+            ),
+          ),
+          GallerySection(
+            title: 'Calendar',
+            child: NixtCard(
+              child: NixtCalendar(
+                value: _calDate,
+                onChanged: (d) => setState(() => _calDate = d),
+              ),
+            ),
+          ),
+          GallerySection(
+            title: 'Number pad',
+            child: NixtCard(
+              child: Column(
+                children: [
+                  Text(
+                    _amount.isEmpty ? '0' : _amount,
+                    style: const TextStyle(
+                      fontFamily: NixtTypography.fontMono,
+                      fontSize: NixtTypography.text3xl,
+                      fontWeight: NixtTypography.weightBold,
+                    ),
+                  ),
+                  const SizedBox(height: NixtSpacing.s4),
+                  NixtNumberPad(
+                    decimal: true,
+                    onPress: (k) => setState(() {
+                      if (k == '.' && _amount.contains('.')) return;
+                      _amount += k;
+                    }),
+                    onBackspace: () => setState(() {
+                      if (_amount.isNotEmpty) {
+                        _amount = _amount.substring(0, _amount.length - 1);
+                      }
+                    }),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

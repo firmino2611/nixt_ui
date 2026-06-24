@@ -705,4 +705,107 @@ void main() {
         .style;
     expect(style.decoration, TextDecoration.none);
   });
+
+  testWidgets('Calendar renders the selected month and fires onChanged',
+      (tester) async {
+    DateTime? picked;
+    await tester.pumpWidget(host(SizedBox(
+      width: 320,
+      child: NixtCalendar(
+        value: DateTime(2026, 6, 15),
+        onChanged: (d) => picked = d,
+      ),
+    )));
+    expect(find.text('June 2026'), findsOneWidget);
+    await tester.tap(find.text('20'));
+    expect(picked, DateTime(2026, 6, 20));
+  });
+
+  testWidgets('Calendar arrows page the visible month', (tester) async {
+    await tester.pumpWidget(host(SizedBox(
+      width: 320,
+      child: NixtCalendar(value: DateTime(2026, 6, 15)),
+    )));
+    await tester.tap(find.byTooltip('Next month'));
+    await tester.pumpAndSettle();
+    expect(find.text('July 2026'), findsOneWidget);
+    await tester.tap(find.byTooltip('Previous month'));
+    await tester.tap(find.byTooltip('Previous month'));
+    await tester.pumpAndSettle();
+    expect(find.text('May 2026'), findsOneWidget);
+  });
+
+  testWidgets('NumberPad emits presses and backspace', (tester) async {
+    final keys = <String>[];
+    var back = 0;
+    await tester.pumpWidget(host(SizedBox(
+      width: 240,
+      child: NixtNumberPad(
+        decimal: true,
+        onPress: keys.add,
+        onBackspace: () => back++,
+      ),
+    )));
+    await tester.tap(find.text('7'));
+    await tester.tap(find.text('.'));
+    await tester.tap(find.byIcon(NixtIcons.byName('delete')));
+    expect(keys, ['7', '.']);
+    expect(back, 1);
+  });
+
+  testWidgets('Stat infers down-trend from a negative delta', (tester) async {
+    await tester.pumpWidget(host(const NixtStat(
+      value: '2.3k',
+      label: 'Users',
+      delta: '-3%',
+    )));
+    expect(find.text('2.3k'), findsOneWidget);
+    expect(find.text('-3%'), findsOneWidget);
+    expect(find.byIcon(NixtIcons.arrowDownLeft), findsOneWidget);
+  });
+
+  testWidgets('Timeline renders every item title', (tester) async {
+    await tester.pumpWidget(host(const NixtTimeline(items: [
+      NixtTimelineItem(title: 'Placed', done: true),
+      NixtTimelineItem(title: 'Shipped', done: false),
+    ])));
+    expect(find.text('Placed'), findsOneWidget);
+    expect(find.text('Shipped'), findsOneWidget);
+  });
+
+  testWidgets('Carousel shows dots when it has multiple slides',
+      (tester) async {
+    await tester.pumpWidget(host(const SizedBox(
+      width: 300,
+      child: NixtCarousel(
+        height: 100,
+        slides: [
+          ColoredBox(color: Color(0xFF111111)),
+          ColoredBox(color: Color(0xFF222222)),
+          ColoredBox(color: Color(0xFF333333)),
+        ],
+      ),
+    )));
+    expect(find.byType(NixtPageIndicator), findsOneWidget);
+  });
+
+  testWidgets('Spinner animates and exposes its label', (tester) async {
+    await tester.pumpWidget(host(const NixtSpinner(label: 'Loading data')));
+    expect(find.byType(NixtSpinner), findsOneWidget);
+    expect(find.bySemanticsLabel('Loading data'), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 100));
+    // No exception while the controller is mid-flight.
+  });
+
+  testWidgets('Steps marks completed steps with a check', (tester) async {
+    await tester.pumpWidget(host(const NixtSteps(
+      steps: ['Cart', 'Address', 'Payment'],
+      current: 1,
+    )));
+    expect(find.text('Cart'), findsOneWidget);
+    expect(find.text('Payment'), findsOneWidget);
+    // Step 0 (< current) shows a check; step 2 shows its number.
+    expect(find.byIcon(NixtIcons.check), findsOneWidget);
+    expect(find.text('3'), findsOneWidget);
+  });
 }

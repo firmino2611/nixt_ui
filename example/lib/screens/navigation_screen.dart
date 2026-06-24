@@ -18,6 +18,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int _navIos = 0;
   int _navMat = 0;
   int _page = 0;
+  int _step = 1;
 
   static const _navItems = [
     NixtBottomNavItem(label: 'Home', value: 0, icon: NixtIcons.home),
@@ -167,6 +168,40 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   ],
                 ),
               ],
+            ),
+          ),
+          GallerySection(
+            title: 'Steps',
+            child: NixtCard(
+              child: Column(
+                children: [
+                  NixtSteps(
+                    steps: const ['Cart', 'Address', 'Payment', 'Done'],
+                    current: _step,
+                  ),
+                  const SizedBox(height: NixtSpacing.s5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      NixtButton(
+                        label: 'Back',
+                        variant: NixtVariant.soft,
+                        size: NixtButtonSize.sm,
+                        onPressed:
+                            _step == 0 ? null : () => setState(() => _step--),
+                      ),
+                      const SizedBox(width: NixtSpacing.s3),
+                      NixtButton(
+                        label: 'Continue',
+                        variant: NixtVariant.soft,
+                        size: NixtButtonSize.sm,
+                        onPressed:
+                            _step == 3 ? null : () => setState(() => _step++),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
