@@ -62,7 +62,11 @@ class _InputsScreenState extends State<InputsScreen> {
                 for (final s in NixtFieldSize.values)
                   Padding(
                     padding: const EdgeInsets.only(bottom: NixtSpacing.s3),
-                    child: NixtInput(hintText: s.name, size: s),
+                    child: NixtInput(
+                      hintText: s.name,
+                      size: s,
+                      label: 'Size $s',
+                    ),
                   ),
               ],
             ),
@@ -105,10 +109,7 @@ class _InputsScreenState extends State<InputsScreen> {
                 NixtSelectItem(label: 'Low', value: 'low'),
                 NixtSelectItem(label: 'Medium', value: 'medium'),
                 NixtSelectItem(label: 'High', value: 'high'),
-                NixtSelectItem(
-                    label: 'Urgent (disabled)',
-                    value: 'urgent',
-                    disabled: true),
+                NixtSelectItem(label: 'Urgent (disabled)', value: 'urgent', disabled: true),
               ],
               onChanged: (v) => setState(() => _priority = v),
             ),
@@ -124,8 +125,7 @@ class _InputsScreenState extends State<InputsScreen> {
                 NixtSelectItem(label: 'Feature', value: 'feature'),
                 NixtSelectItem(label: 'Docs', value: 'docs'),
                 NixtSelectItem(label: 'Design', value: 'design'),
-                NixtSelectItem(
-                    label: 'Chore (disabled)', value: 'chore', disabled: true),
+                NixtSelectItem(label: 'Chore (disabled)', value: 'chore', disabled: true),
               ],
               onChanged: (v) => setState(() => _tags = v),
             ),
@@ -144,8 +144,7 @@ class _InputsScreenState extends State<InputsScreen> {
                   showCancel: true,
                 ),
                 const SizedBox(height: NixtSpacing.s3),
-                const NixtSearchBar(
-                    hintText: 'Soft', variant: NixtFieldVariant.soft),
+                const NixtSearchBar(hintText: 'Soft', variant: NixtFieldVariant.soft),
               ],
             ),
           ),

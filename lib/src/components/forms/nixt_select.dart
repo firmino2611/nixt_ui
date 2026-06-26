@@ -636,7 +636,7 @@ class _Checkbox extends StatelessWidget {
         ),
       ),
       child: checked
-          ? Icon(NixtIcons.check, size: 14, color: c.textInverted)
+          ? Icon(NixtIcons.check, size: 14, color: nixtOnColor(c.primary))
           : null,
     );
   }

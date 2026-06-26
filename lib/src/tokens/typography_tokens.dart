@@ -89,6 +89,5 @@ abstract final class NixtTypography {
 
   /// Converts an `em` tracking value to a logical-pixel `letterSpacing` for the
   /// given [fontSize] (Flutter expresses letter spacing in pixels, not em).
-  static double letterSpacing(double emTracking, double fontSize) =>
-      emTracking * fontSize;
+  static double letterSpacing(double emTracking, double fontSize) => emTracking * fontSize;
 }

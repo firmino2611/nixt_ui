@@ -26,6 +26,7 @@ class NixtInput extends StatefulWidget {
     this.controller,
     this.onChanged,
     this.onSubmitted,
+    this.label,
     this.hintText,
     this.obscureText = false,
     this.keyboardType,
@@ -50,6 +51,9 @@ class NixtInput extends StatefulWidget {
 
   /// Submit (keyboard action) callback.
   final ValueChanged<String>? onSubmitted;
+
+  /// Optional label rendered above the field. Scales with [size].
+  final String? label;
 
   /// Placeholder text.
   final String? hintText;
@@ -139,8 +143,7 @@ class _NixtInputState extends State<NixtInput> {
       child: Row(
         children: [
           if (widget.icon != null) ...[
-            NixtIcon(widget.icon!,
-                size: widget.size.iconSize, color: c.textDimmed),
+            NixtIcon(widget.icon!, size: widget.size.iconSize, color: c.textDimmed),
             SizedBox(width: widget.size.gap),
           ],
           Expanded(
@@ -173,8 +176,7 @@ class _NixtInputState extends State<NixtInput> {
           ),
           if (widget.trailingIcon != null) ...[
             SizedBox(width: widget.size.gap),
-            NixtIcon(widget.trailingIcon!,
-                size: widget.size.iconSize, color: c.textDimmed),
+            NixtIcon(widget.trailingIcon!, size: widget.size.iconSize, color: c.textDimmed),
           ],
         ],
       ),
@@ -182,23 +184,39 @@ class _NixtInputState extends State<NixtInput> {
 
     final shell = Opacity(opacity: widget.enabled ? 1 : 0.5, child: field);
 
-    if (!errored) return shell;
+    if (!errored && widget.label == null) return shell;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        shell,
-        Padding(
-          padding: const EdgeInsets.only(top: 6, left: 2),
-          child: Text(
-            widget.errorText!,
-            style: TextStyle(
-              fontFamily: NixtTypography.fontSans,
-              fontSize: NixtTypography.textXs,
-              color: c.error,
+        if (widget.label != null) ...[
+          Padding(
+            padding: const EdgeInsets.only(left: 2),
+            child: Text(
+              widget.label!,
+              style: TextStyle(
+                fontFamily: NixtTypography.fontSans,
+                fontSize: widget.size.labelSize,
+                fontWeight: NixtTypography.weightMedium,
+                color: errored ? c.error : c.text,
+              ),
             ),
           ),
-        ),
+          SizedBox(height: widget.size.labelGap),
+        ],
+        shell,
+        if (errored)
+          Padding(
+            padding: const EdgeInsets.only(top: 6, left: 2),
+            child: Text(
+              widget.errorText!,
+              style: TextStyle(
+                fontFamily: NixtTypography.fontSans,
+                fontSize: NixtTypography.textXs,
+                color: c.error,
+              ),
+            ),
+          ),
       ],
     );
   }

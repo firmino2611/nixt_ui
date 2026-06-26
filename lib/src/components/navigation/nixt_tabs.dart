@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../foundations/color_util.dart';
 import '../../theme/nixt_colors.dart';
 import '../../theme/nixt_theme.dart';
 import '../../tokens/color_roles.dart';
@@ -119,7 +120,7 @@ class NixtTabs<T> extends StatelessWidget {
             child: _TabCell(
               item: items[i],
               active: i == activeIndex,
-              activeText: isLink ? accent : c.textHighlighted,
+              activeText: accent,
               accent: accent,
               inactive: c.textMuted,
               isLink: isLink,
@@ -196,7 +197,8 @@ Widget _indicatorBody(NixtColors c, NixtTheme t, bool isLink, Color accent) {
     decoration: BoxDecoration(
       color: c.bg,
       borderRadius: BorderRadius.circular(t.radius.lg - 3),
-      boxShadow: t.shadows.sm,
+      border: Border.all(color: nixtOpacity(accent, 0.45), width: 1),
+      boxShadow: t.shadows.md,
     ),
   );
 }

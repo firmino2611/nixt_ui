@@ -128,16 +128,23 @@ class NixtColors {
   NixtColorScale scaleFor(NixtColorRole r) =>
       r == NixtColorRole.neutral ? neutral.scale : roleScales[r]!;
 
+  /// A single shade of [role] — shorthand for `scaleFor(role).shade`.
+  /// E.g. `colors.shade(NixtColorRole.primary, NixtShade.s700)`.
+  Color shade(NixtColorRole role, NixtShade step) => scaleFor(role).shade(step);
+
   /// Light-mode resolution for [neutral].
   ///
-  /// [roles] optionally overrides the palette scale for one or more brand/status
-  /// roles — the design-system-level color config. Light uses shade `500`.
+  /// Configure brand/status roles two ways (both optional): [palette] sets a
+  /// role from a single seed color and auto-generates its scale (see
+  /// [NixtRoleColor]); [roles] supplies a fully hand-authored scale. When both
+  /// name the same role, [roles] wins. Light uses shade `500`.
   factory NixtColors.light({
     NixtNeutral neutral = NixtNeutral.slate,
     Map<NixtColorRole, NixtColorScale>? roles,
+    Map<NixtColorRole, NixtRoleColor>? palette,
   }) {
     final n = neutral.scale;
-    final scales = _resolveRoleScales(roles);
+    final scales = _resolveRoleScales(roles, palette);
     return NixtColors(
       brightness: Brightness.light,
       neutral: neutral,
@@ -168,13 +175,15 @@ class NixtColors {
   }
 
   /// Dark-mode resolution for [neutral]. Brand colors lighten one step (400);
-  /// surfaces/text invert. [roles] overrides role scales (DS color config).
+  /// surfaces/text invert. Configure roles via [palette] (seed colors, scales
+  /// auto-generated) and/or [roles] (full scales); [roles] wins on conflict.
   factory NixtColors.dark({
     NixtNeutral neutral = NixtNeutral.slate,
     Map<NixtColorRole, NixtColorScale>? roles,
+    Map<NixtColorRole, NixtRoleColor>? palette,
   }) {
     final n = neutral.scale;
-    final scales = _resolveRoleScales(roles);
+    final scales = _resolveRoleScales(roles, palette);
     return NixtColors(
       brightness: Brightness.dark,
       neutral: neutral,
@@ -203,14 +212,72 @@ class NixtColors {
     );
   }
 
-  /// Fills in default scales for any role not overridden in [roles].
+  /// Resolves each non-neutral role to a scale. Precedence per role: explicit
+  /// [roles] scale > [palette] seed-generated scale > the built-in default.
   static Map<NixtColorRole, NixtColorScale> _resolveRoleScales(
     Map<NixtColorRole, NixtColorScale>? roles,
+    Map<NixtColorRole, NixtRoleColor>? palette,
   ) =>
       {
         for (final r in NixtColorRole.values)
-          if (r != NixtColorRole.neutral) r: roles?[r] ?? NixtRoleScales.of(r),
+          if (r != NixtColorRole.neutral)
+            r: roles?[r] ?? palette?[r]?.scale ?? NixtRoleScales.of(r),
       };
+
+  /// Returns a copy with the given fields replaced. Used to derive a localized
+  /// color set for a subtree (e.g. an app bar with a custom background).
+  NixtColors copyWith({
+    Brightness? brightness,
+    NixtNeutral? neutral,
+    Map<NixtColorRole, NixtColorScale>? roleScales,
+    Color? primary,
+    Color? secondary,
+    Color? success,
+    Color? info,
+    Color? warning,
+    Color? error,
+    Color? textDimmed,
+    Color? textMuted,
+    Color? textToned,
+    Color? text,
+    Color? textHighlighted,
+    Color? textInverted,
+    Color? bg,
+    Color? bgMuted,
+    Color? bgElevated,
+    Color? bgAccented,
+    Color? bgInverted,
+    Color? border,
+    Color? borderMuted,
+    Color? borderAccented,
+    Color? borderInverted,
+  }) =>
+      NixtColors(
+        brightness: brightness ?? this.brightness,
+        neutral: neutral ?? this.neutral,
+        roleScales: roleScales ?? this.roleScales,
+        primary: primary ?? this.primary,
+        secondary: secondary ?? this.secondary,
+        success: success ?? this.success,
+        info: info ?? this.info,
+        warning: warning ?? this.warning,
+        error: error ?? this.error,
+        textDimmed: textDimmed ?? this.textDimmed,
+        textMuted: textMuted ?? this.textMuted,
+        textToned: textToned ?? this.textToned,
+        text: text ?? this.text,
+        textHighlighted: textHighlighted ?? this.textHighlighted,
+        textInverted: textInverted ?? this.textInverted,
+        bg: bg ?? this.bg,
+        bgMuted: bgMuted ?? this.bgMuted,
+        bgElevated: bgElevated ?? this.bgElevated,
+        bgAccented: bgAccented ?? this.bgAccented,
+        bgInverted: bgInverted ?? this.bgInverted,
+        border: border ?? this.border,
+        borderMuted: borderMuted ?? this.borderMuted,
+        borderAccented: borderAccented ?? this.borderAccented,
+        borderInverted: borderInverted ?? this.borderInverted,
+      );
 
   /// Linearly interpolates every channel (drives smooth theme transitions).
   static NixtColors lerp(NixtColors a, NixtColors b, double t) {

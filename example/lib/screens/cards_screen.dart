@@ -93,8 +93,7 @@ class _CardsScreenState extends State<CardsScreen> {
                   NixtBadge(label: '$_taps taps', variant: NixtVariant.subtle),
                 ],
               ),
-              child:
-                  const Text('Whole surface is tappable with press feedback.'),
+              child: const Text('Whole surface is tappable with press feedback.'),
             ),
           ),
           GallerySection(
@@ -103,8 +102,7 @@ class _CardsScreenState extends State<CardsScreen> {
               spacing: NixtSpacing.s2,
               runSpacing: NixtSpacing.s2,
               children: [
-                for (final (label, role) in _roles)
-                  NixtBadge(label: label, color: role),
+                for (final (label, role) in _roles) NixtBadge(label: label, color: role),
               ],
             ),
           ),
@@ -182,6 +180,41 @@ class _CardsScreenState extends State<CardsScreen> {
             ),
           ),
           const GallerySection(
+            title: 'Chip indicator',
+            child: Wrap(
+              spacing: NixtSpacing.s6,
+              runSpacing: NixtSpacing.s4,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                // Status dot hugging a circular avatar.
+                NixtChipIndicator(
+                  inset: true,
+                  position: NixtChipPosition.bottomRight,
+                  color: NixtColorRole.success,
+                  child: NixtAvatar(name: 'Ada Lovelace'),
+                ),
+                // Unread count, clamped with max.
+                NixtChipIndicator(
+                  text: '128',
+                  max: 99,
+                  color: NixtColorRole.error,
+                  inset: true,
+                  child: NixtAvatar(name: 'Grace Hopper'),
+                ),
+                // Count overlaid on an icon.
+                NixtChipIndicator(
+                  text: '3',
+                  color: NixtColorRole.error,
+                  child: NixtIcon(NixtIcons.bell, size: 28),
+                ),
+                // Standalone dots — status colors.
+                NixtChipIndicator(standalone: true, color: NixtColorRole.success),
+                NixtChipIndicator(standalone: true, color: NixtColorRole.warning),
+                NixtChipIndicator(standalone: true, color: NixtColorRole.neutral),
+              ],
+            ),
+          ),
+          const GallerySection(
             title: 'Divider',
             child: Column(
               children: [
@@ -201,15 +234,9 @@ class _CardsScreenState extends State<CardsScreen> {
               children: [
                 NixtProgress(value: 64, label: 'Uploading', showValue: true),
                 SizedBox(height: NixtSpacing.s4),
-                NixtProgress(
-                    value: 32,
-                    color: NixtColorRole.warning,
-                    size: NixtProgressSize.sm),
+                NixtProgress(value: 32, color: NixtColorRole.warning, size: NixtProgressSize.sm),
                 SizedBox(height: NixtSpacing.s4),
-                NixtProgress(
-                    value: 90,
-                    color: NixtColorRole.success,
-                    size: NixtProgressSize.lg),
+                NixtProgress(value: 90, color: NixtColorRole.success, size: NixtProgressSize.lg),
               ],
             ),
           ),
@@ -220,15 +247,10 @@ class _CardsScreenState extends State<CardsScreen> {
               runSpacing: NixtSpacing.s3,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                NixtAvatar(
-                    name: 'Ada Lovelace', status: NixtAvatarStatus.online),
+                NixtAvatar(name: 'Ada Lovelace', status: NixtAvatarStatus.online),
                 NixtAvatar(size: NixtAvatarSize.lg),
-                NixtAvatar(
-                    name: 'Grace Hopper',
-                    square: true,
-                    status: NixtAvatarStatus.busy),
-                NixtAvatar(
-                    size: NixtAvatarSize.sm, status: NixtAvatarStatus.away),
+                NixtAvatar(name: 'Grace Hopper', square: true, status: NixtAvatarStatus.busy),
+                NixtAvatar(size: NixtAvatarSize.sm, status: NixtAvatarStatus.away),
               ],
             ),
           ),
@@ -371,18 +393,15 @@ class _CardsScreenState extends State<CardsScreen> {
                   NixtAccordionItem(
                     label: 'Shipping',
                     icon: NixtIcons.target,
-                    content: Text(
-                        'Orders ship within 2 business days via tracked post.'),
+                    content: Text('Orders ship within 2 business days via tracked post.'),
                   ),
                   NixtAccordionItem(
                     label: 'Returns',
-                    content: Text(
-                        'Free returns within 30 days of delivery, no questions asked.'),
+                    content: Text('Free returns within 30 days of delivery, no questions asked.'),
                   ),
                   NixtAccordionItem(
                     label: 'Warranty',
-                    content: Text(
-                        'Every product carries a two-year limited warranty.'),
+                    content: Text('Every product carries a two-year limited warranty.'),
                   ),
                 ],
               ),

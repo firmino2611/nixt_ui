@@ -32,6 +32,14 @@ class _GalleryAppState extends State<GalleryApp> {
         }
       });
 
+  void _setRoleScale(NixtColorRole role, NixtColorScale? scale) => setState(() {
+        if (scale == null) {
+          _roles.remove(role);
+        } else {
+          _roles[role] = scale;
+        }
+      });
+
   void _reset() => setState(() {
         _roles.clear();
         _neutral = NixtNeutral.slate;
@@ -52,6 +60,7 @@ class _GalleryAppState extends State<GalleryApp> {
       ),
       setNeutral: (n) => setState(() => _neutral = n),
       setRole: _setRole,
+      setRoleScale: _setRoleScale,
       setRadius: (r) => setState(() => _radiusBase = r),
       resetTheme: _reset,
       // The whole DS is configured here — every component reads it.

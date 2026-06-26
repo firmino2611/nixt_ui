@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../../foundations/color_util.dart';
 import '../../foundations/nixt_icons.dart';
@@ -42,6 +42,7 @@ class NixtAppBar extends StatelessWidget {
     this.actions,
     this.large = false,
     this.border = true,
+    this.backgroundColor,
     super.key,
   });
 
@@ -69,17 +70,29 @@ class NixtAppBar extends StatelessWidget {
   /// Show the hairline bottom border. Defaults to true.
   final bool border;
 
+  /// Surface color. Defaults to a frosted translucent [NixtColors.bg]. Pass an
+  /// opaque color for a solid bar, or a semi-transparent one to keep the blur.
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     final t = NixtTheme.of(context);
     final c = t.colors;
     final isIOS = variant == NixtAppBarVariant.ios;
-    final height = isIOS ? 44.0 : 56.0;
+    final height = isIOS ? 54.0 : 66.0;
+
+    // When a custom [backgroundColor] is set, derive a contrast-safe foreground
+    // so text and icons stay legible on any fill.
+    final Color? fg = backgroundColor != null ? nixtOnColor(backgroundColor!) : null;
+    final titleColor = fg ?? c.textHighlighted;
+    final subtitleColor = fg != null ? nixtOpacity(fg, 0.72) : c.textMuted;
+    final backColor = fg ?? c.primary;
+    final borderColor = fg != null ? nixtOpacity(fg, 0.2) : c.border;
 
     final Widget? lead = leading ??
         (onBack != null
             ? (isIOS
-                ? _IOSBack(color: c.primary, onTap: onBack!)
+                ? _IOSBack(color: backColor, onTap: onBack!)
                 : NixtIconButton(
                     icon: NixtIcons.arrowLeft,
                     label: 'Back',
@@ -90,8 +103,7 @@ class NixtAppBar extends StatelessWidget {
     final titleBlock = (!large && (title != null || subtitle != null))
         ? Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment:
-                isIOS ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+            crossAxisAlignment: isIOS ? CrossAxisAlignment.center : CrossAxisAlignment.start,
             children: [
               if (title != null)
                 Text(
@@ -101,10 +113,9 @@ class NixtAppBar extends StatelessWidget {
                   textAlign: isIOS ? TextAlign.center : TextAlign.start,
                   style: TextStyle(
                     fontFamily: NixtTypography.fontSans,
-                    fontSize:
-                        isIOS ? NixtTypography.textBase : NixtTypography.textLg,
+                    fontSize: isIOS ? NixtTypography.textBase : NixtTypography.textLg,
                     fontWeight: FontWeight.w600,
-                    color: c.textHighlighted,
+                    color: titleColor,
                   ),
                 ),
               if (subtitle != null)
@@ -115,7 +126,7 @@ class NixtAppBar extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: NixtTypography.fontSans,
                     fontSize: NixtTypography.textXs,
-                    color: c.textMuted,
+                    color: subtitleColor,
                   ),
                 ),
             ],
@@ -126,7 +137,7 @@ class NixtAppBar extends StatelessWidget {
     final Widget bar = SizedBox(
       height: height,
       child: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 8),
+        padding: const EdgeInsets.only(left: 20, right: 8, top: 10, bottom: 10),
         child: isIOS
             ? Row(
                 children: [
@@ -157,7 +168,7 @@ class NixtAppBar extends StatelessWidget {
 
     final largeTitle = (large && title != null)
         ? Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,7 +183,7 @@ class NixtAppBar extends StatelessWidget {
                       NixtTypography.trackingTight,
                       NixtTypography.text3xl,
                     ),
-                    color: c.textHighlighted,
+                    color: titleColor,
                   ),
                 ),
                 if (subtitle != null)
@@ -183,7 +194,7 @@ class NixtAppBar extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: NixtTypography.fontSans,
                         fontSize: NixtTypography.textSm,
-                        color: c.textMuted,
+                        color: subtitleColor,
                       ),
                     ),
                   ),
@@ -192,18 +203,36 @@ class NixtAppBar extends StatelessWidget {
           )
         : null;
 
-    final content = Column(
+    Widget content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [bar, if (largeTitle != null) largeTitle],
     );
+
+    // Recolor icon/text descendants (actions, default back) to the contrast
+    // foreground by overriding the theme's text roles for this subtree only.
+    if (fg != null) {
+      final overridden = t.copyWith(
+        colors: c.copyWith(
+          text: fg,
+          textHighlighted: fg,
+          textToned: fg,
+          textMuted: subtitleColor,
+          textDimmed: nixtOpacity(fg, 0.6),
+        ),
+      );
+      content = Theme(
+        data: Theme.of(context).copyWith(extensions: [overridden]),
+        child: IconTheme.merge(data: IconThemeData(color: fg), child: content),
+      );
+    }
 
     return ClipRect(
       child: BackdropFilter(
         filter: ui.ImageFilter.blur(sigmaX: 12, sigmaY: 12),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: nixtOpacity(c.bg, 0.88),
-            border: border ? Border(bottom: BorderSide(color: c.border)) : null,
+            color: backgroundColor ?? nixtOpacity(c.bg, 0.88),
+            border: border ? Border(bottom: BorderSide(color: borderColor)) : null,
           ),
           child: content,
         ),
@@ -221,9 +250,10 @@ class _Actions extends StatelessWidget {
     if (actions == null || actions!.isEmpty) return const SizedBox.shrink();
     return Row(
       mainAxisSize: MainAxisSize.min,
+      spacing: 2,
       children: [
         for (var i = 0; i < actions!.length; i++) ...[
-          if (i != 0) const SizedBox(width: 2),
+          // if (i != 0) const SizedBox(width: 2),
           actions![i],
         ],
       ],

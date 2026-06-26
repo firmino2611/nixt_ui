@@ -230,12 +230,12 @@ class _Badge extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: NixtTypography.fontSans,
           fontSize: 10,
           fontWeight: FontWeight.w700,
           height: 1,
-          color: Color(0xFFFFFFFF),
+          color: nixtOnColor(bg),
         ),
       ),
     );

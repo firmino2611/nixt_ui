@@ -1,4 +1,34 @@
+import 'dart:ui';
+
 import 'palette.dart';
+
+/// Configures a color role from a single brand color.
+///
+/// The [seed] becomes shade `500` — the middle of the ruler — and the rest of
+/// the scale (`50` lightest … `950` darkest) is generated around it. Pass
+/// [shades] to override individual steps when the generated tone needs tuning;
+/// only the listed keys change, everything else stays derived from [seed].
+///
+/// ```dart
+/// // One brand color → full primary scale.
+/// NixtRoleColor(Color(0xFF7C3AED));
+/// // Same, but force a deeper 900.
+/// NixtRoleColor(Color(0xFF7C3AED), shades: {NixtShade.s900: Color(0xFF2E1065)});
+/// ```
+class NixtRoleColor {
+  /// Creates a role config from a [seed] (shade 500) and optional [shades]
+  /// overrides.
+  const NixtRoleColor(this.seed, {this.shades});
+
+  /// The brand color — used as shade `500`.
+  final Color seed;
+
+  /// Optional per-shade overrides layered over the generated scale.
+  final Map<NixtShade, Color>? shades;
+
+  /// The resolved full scale (seed-generated, with [shades] applied).
+  NixtColorScale get scale => NixtColorScale.fromSeed(seed, overrides: shades);
+}
 
 /// The seven semantic color roles of the design system.
 ///

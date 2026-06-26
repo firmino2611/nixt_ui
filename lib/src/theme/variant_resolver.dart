@@ -63,10 +63,9 @@ abstract final class NixtVariantResolver {
     final isNeutral = role == NixtColorRole.neutral;
     // Neutral uses highlighted text as its "base"; others use the role color.
     final base = isNeutral ? colors.textHighlighted : colors.role(role);
-    // Warning's solid foreground is dark; everything else is white.
-    final onSolid = role == NixtColorRole.warning
-        ? colors.neutral.scale.s900
-        : const Color(0xFFFFFFFF);
+    // Solid foreground is contrast-picked from the fill — dark glyphs on light
+    // fills (amber, bright cyan), white on dark ones. Same calc as the app bar.
+    final onSolid = nixtOnColor(base);
     Color tint(double pct) => nixtOpacity(base, pct / 100);
 
     switch (variant) {

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../../foundations/color_util.dart';
 import '../../foundations/nixt_icons.dart';
 import '../../theme/nixt_theme.dart';
 import '../../tokens/color_roles.dart';
@@ -80,7 +81,7 @@ class NixtCheckbox extends StatelessWidget {
         ),
       ),
       child: value
-          ? NixtIcon(NixtIcons.check, size: _box - 6, color: c.textInverted)
+          ? NixtIcon(NixtIcons.check, size: _box - 6, color: nixtOnColor(accent))
           : null,
     );
 

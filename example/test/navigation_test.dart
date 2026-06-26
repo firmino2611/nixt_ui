@@ -13,6 +13,7 @@ void main() {
         toggleBrightness: () {},
         setNeutral: (_) {},
         setRole: (_, __) {},
+        setRoleScale: (_, __) {},
         setRadius: (_) {},
         resetTheme: () {},
         child: MaterialApp(
@@ -55,6 +56,14 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Card variants'), findsOneWidget);
     expect(find.text('Filter chips'), findsOneWidget);
+  });
+
+  testWidgets('tapping Colors opens the palette playground', (tester) async {
+    await tester.pumpWidget(app());
+    await tester.tap(find.text('Colors'));
+    await tester.pumpAndSettle();
+    expect(find.text('Seed color — becomes shade 500'), findsOneWidget);
+    expect(find.text('Generated scale'), findsOneWidget);
   });
 
   testWidgets('tapping Feedback opens the feedback screen', (tester) async {

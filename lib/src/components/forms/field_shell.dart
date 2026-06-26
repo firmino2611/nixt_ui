@@ -47,6 +47,20 @@ extension NixtFieldSizeMetrics on NixtFieldSize {
         NixtFieldSize.lg => NixtTypography.textBase,
       };
 
+  /// Label size — one step below the field text.
+  double get labelSize => switch (this) {
+        NixtFieldSize.sm => NixtTypography.textXs,
+        NixtFieldSize.md => NixtTypography.textSm,
+        NixtFieldSize.lg => NixtTypography.textBase,
+      };
+
+  /// Gap between label and field.
+  double get labelGap => switch (this) {
+        NixtFieldSize.sm => 4,
+        NixtFieldSize.md => 6,
+        NixtFieldSize.lg => 8,
+      };
+
   /// Horizontal padding.
   double get padX => switch (this) {
         NixtFieldSize.sm => 10,

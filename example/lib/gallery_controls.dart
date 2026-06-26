@@ -13,6 +13,7 @@ class GalleryControls extends InheritedWidget {
     required this.toggleBrightness,
     required this.setNeutral,
     required this.setRole,
+    required this.setRoleScale,
     required this.setRadius,
     required this.resetTheme,
     required super.child,
@@ -39,6 +40,10 @@ class GalleryControls extends InheritedWidget {
 
   /// Sets (or clears, when [seed] is null) a global role color from a seed.
   final void Function(NixtColorRole role, Color? seed) setRole;
+
+  /// Sets (or clears, when [scale] is null) a global role to a full scale —
+  /// lets callers push a seed-generated scale with per-shade overrides.
+  final void Function(NixtColorRole role, NixtColorScale? scale) setRoleScale;
 
   /// Sets the radius base.
   final ValueChanged<double> setRadius;

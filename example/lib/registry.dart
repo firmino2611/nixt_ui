@@ -3,6 +3,7 @@ import 'package:nixt_ui/nixt_ui.dart';
 
 import 'screens/buttons_screen.dart';
 import 'screens/cards_screen.dart';
+import 'screens/colors_screen.dart';
 import 'screens/feedback_screen.dart';
 import 'screens/icons_screen.dart';
 import 'screens/inputs_screen.dart';
@@ -40,6 +41,7 @@ const List<ComponentEntry> kComponents = [
   ComponentEntry(name: 'Inputs', icon: NixtIcons.pencil, builder: _inputs),
   ComponentEntry(name: 'Toggles', icon: NixtIcons.check, builder: _toggles),
   ComponentEntry(name: 'Cards', icon: NixtIcons.grid, builder: _cards),
+  ComponentEntry(name: 'Colors', icon: NixtIcons.droplet, builder: _colors),
   ComponentEntry(name: 'Feedback', icon: NixtIcons.bell, builder: _feedback),
   ComponentEntry(
       name: 'Navigation', icon: NixtIcons.menu, builder: _navigation),
@@ -49,6 +51,7 @@ const List<ComponentEntry> kComponents = [
 
 Widget _buttons(BuildContext _) => const ButtonsScreen();
 Widget _cards(BuildContext _) => const CardsScreen();
+Widget _colors(BuildContext _) => const ColorsScreen();
 Widget _feedback(BuildContext _) => const FeedbackScreen();
 Widget _icons(BuildContext _) => const IconsScreen();
 Widget _inputs(BuildContext _) => const InputsScreen();

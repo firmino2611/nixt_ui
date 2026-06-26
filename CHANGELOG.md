@@ -1,5 +1,41 @@
 # Changelog
 
+## 0.4.0
+
+Color-system overhaul, automatic contrast, and a new indicator component.
+
+### Added
+- **`NixtChipIndicator`** — a dot/count indicator overlaid on any child (the
+  mobile port of Nuxt UI's Chip): status dots, unread counts (`max` clamps to
+  `N+`), `position`, `inset` for circular children, `standalone`, and `show`.
+- **Palette from a single color** — configure a role from one brand color and
+  get the whole `50…950` scale automatically: `NixtRoleColor(seed, {shades})`
+  plus a `palette:` parameter on `NixtApp` / `NixtTheme.light|dark`. The seed
+  becomes shade `500`; individual shades can be overridden.
+- **`NixtShade` enum** (`s50…s950`) — type-safe shade steps; an invalid step is
+  now a compile error instead of a runtime crash.
+- **Named shade accessors** — `colors.primary600`, `colors.error100`, … for
+  every role × shade, plus `colors.shade(role, NixtShade)` and
+  `NixtColors.copyWith`.
+- **`nixtOnColor(background)`** — contrast-safe foreground (near-black or white)
+  picked by luminance.
+- **`NixtInput.label`** — optional label that scales with the field size.
+- **`NixtAppBar.backgroundColor`** — custom bar fill; text and icons adapt for
+  contrast automatically.
+
+### Changed
+- **Automatic contrast everywhere** — solid-fill components (button, icon
+  button, FAB, badge, checkbox, select check, bottom-nav badge, chip indicator,
+  app bar) now pick their foreground from the fill's luminance, so a light brand
+  color (bright cyan, amber) gets dark glyphs instead of unreadable white.
+- **Tabs (pill)** — stronger selected emphasis: accent label, accent border, and
+  a deeper shadow on the sliding pill (fixes the washed-out look in dark mode).
+
+### Breaking
+- `NixtColorScale.shade` and `NixtColorScale.fromSeed(overrides:)` now take
+  `NixtShade` instead of raw `int` (e.g. `scale.shade(NixtShade.s700)`,
+  `overrides: {NixtShade.s900: …}`). Migrate `int` step literals to the enum.
+
 ## 0.3.0
 
 Seven new components, all theme-driven and light/dark aware.

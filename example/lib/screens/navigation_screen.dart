@@ -23,8 +23,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   static const _navItems = [
     NixtBottomNavItem(label: 'Home', value: 0, icon: NixtIcons.home),
     NixtBottomNavItem(label: 'Search', value: 1, icon: NixtIcons.search),
-    NixtBottomNavItem(
-        label: 'Alerts', value: 2, icon: NixtIcons.bell, badge: '3'),
+    NixtBottomNavItem(label: 'Alerts', value: 2, icon: NixtIcons.bell, badge: '3'),
     NixtBottomNavItem(label: 'Profile', value: 3, icon: NixtIcons.user),
   ];
 
@@ -52,10 +51,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 title: 'Settings',
                 onBack: () {},
                 actions: [
-                  NixtIconButton(
-                      icon: NixtIcons.search,
-                      label: 'Search',
-                      onPressed: () {}),
+                  NixtIconButton(icon: NixtIcons.search, label: 'Search', onPressed: () {}),
+                  NixtIconButton(icon: NixtIcons.user, label: 'Search', onPressed: () {}),
                 ],
               ),
             ),
@@ -69,10 +66,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 subtitle: '12 unread',
                 onBack: () {},
                 actions: [
-                  NixtIconButton(
-                      icon: NixtIcons.settings,
-                      label: 'Settings',
-                      onPressed: () {}),
+                  NixtIconButton(icon: NixtIcons.settings, label: 'Settings', onPressed: () {}),
+                  NixtIconButton(icon: NixtIcons.user, label: 'Settings', onPressed: () {}),
                 ],
               ),
             ),
@@ -80,8 +75,20 @@ class _NavigationScreenState extends State<NavigationScreen> {
           GallerySection(
             title: 'App bar — large title',
             child: _barCard(
-              const NixtAppBar(
-                  title: 'Library', subtitle: 'Your saved items', large: true),
+              const NixtAppBar(title: 'Library', subtitle: 'Your saved items', large: true),
+            ),
+          ),
+          GallerySection(
+            title: 'App bar — custom background',
+            child: _barCard(
+              NixtAppBar(
+                title: 'Profile',
+                backgroundColor: context.nixt.colors.primary600,
+                onBack: () {},
+                actions: [
+                  NixtIconButton(icon: NixtIcons.settings, label: 'Settings', onPressed: () {}),
+                ],
+              ),
             ),
           ),
           GallerySection(
@@ -103,16 +110,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
               value: _linkTab,
               onChanged: (v) => setState(() => _linkTab = v),
               items: const [
-                NixtTabItem(
-                    label: 'Overview', value: 'overview', icon: NixtIcons.grid),
-                NixtTabItem(
-                    label: 'Activity',
-                    value: 'activity',
-                    icon: NixtIcons.barChart),
-                NixtTabItem(
-                    label: 'Settings',
-                    value: 'settings',
-                    icon: NixtIcons.settings),
+                NixtTabItem(label: 'Overview', value: 'overview', icon: NixtIcons.grid),
+                NixtTabItem(label: 'Activity', value: 'activity', icon: NixtIcons.barChart),
+                NixtTabItem(label: 'Settings', value: 'settings', icon: NixtIcons.settings),
               ],
             ),
           ),
@@ -154,16 +154,14 @@ class _NavigationScreenState extends State<NavigationScreen> {
                       label: 'Prev',
                       variant: NixtVariant.soft,
                       size: NixtButtonSize.sm,
-                      onPressed:
-                          _page == 0 ? null : () => setState(() => _page--),
+                      onPressed: _page == 0 ? null : () => setState(() => _page--),
                     ),
                     const SizedBox(width: NixtSpacing.s3),
                     NixtButton(
                       label: 'Next',
                       variant: NixtVariant.soft,
                       size: NixtButtonSize.sm,
-                      onPressed:
-                          _page == 4 ? null : () => setState(() => _page++),
+                      onPressed: _page == 4 ? null : () => setState(() => _page++),
                     ),
                   ],
                 ),
@@ -187,16 +185,14 @@ class _NavigationScreenState extends State<NavigationScreen> {
                         label: 'Back',
                         variant: NixtVariant.soft,
                         size: NixtButtonSize.sm,
-                        onPressed:
-                            _step == 0 ? null : () => setState(() => _step--),
+                        onPressed: _step == 0 ? null : () => setState(() => _step--),
                       ),
                       const SizedBox(width: NixtSpacing.s3),
                       NixtButton(
                         label: 'Continue',
                         variant: NixtVariant.soft,
                         size: NixtButtonSize.sm,
-                        onPressed:
-                            _step == 3 ? null : () => setState(() => _step++),
+                        onPressed: _step == 3 ? null : () => setState(() => _step++),
                       ),
                     ],
                   ),

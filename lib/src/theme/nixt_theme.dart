@@ -44,30 +44,41 @@ class NixtTheme extends ThemeExtension<NixtTheme> {
   final NixtButtonTheme button;
 
   /// Light theme. Customize the [neutral] palette, [radius] base, and brand
-  /// [roles] (the DS-level color config — e.g. a custom primary).
+  /// roles. Set a role from one brand color via [palette] (its scale is
+  /// auto-generated around shade `500` — see [NixtRoleColor]) and/or supply a
+  /// fully hand-authored scale via [roles] ([roles] wins on conflict).
+  ///
+  /// ```dart
+  /// NixtTheme.light(palette: {
+  ///   NixtColorRole.primary: NixtRoleColor(Color(0xFF7C3AED)),
+  /// });
+  /// ```
   factory NixtTheme.light({
     NixtNeutral neutral = NixtNeutral.slate,
     NixtRadius radius = const NixtRadius(),
     NixtButtonTheme button = const NixtButtonTheme(),
     Map<NixtColorRole, NixtColorScale>? roles,
+    Map<NixtColorRole, NixtRoleColor>? palette,
   }) =>
       NixtTheme(
-        colors: NixtColors.light(neutral: neutral, roles: roles),
+        colors: NixtColors.light(neutral: neutral, roles: roles, palette: palette),
         radius: radius,
         shadows: NixtShadows.light(),
         button: button,
       );
 
   /// Dark theme. Customize the [neutral] palette, [radius] base, and brand
-  /// [roles] (the DS-level color config — e.g. a custom primary).
+  /// roles via [palette] (seed colors, scales auto-generated) and/or [roles]
+  /// (full scales); [roles] wins on conflict.
   factory NixtTheme.dark({
     NixtNeutral neutral = NixtNeutral.slate,
     NixtRadius radius = const NixtRadius(),
     NixtButtonTheme button = const NixtButtonTheme(),
     Map<NixtColorRole, NixtColorScale>? roles,
+    Map<NixtColorRole, NixtRoleColor>? palette,
   }) =>
       NixtTheme(
-        colors: NixtColors.dark(neutral: neutral, roles: roles),
+        colors: NixtColors.dark(neutral: neutral, roles: roles, palette: palette),
         radius: radius,
         shadows: NixtShadows.dark(),
         button: button,

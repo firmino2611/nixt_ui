@@ -1,5 +1,50 @@
 import 'dart:ui';
 
+/// The eleven discrete steps of a [NixtColorScale], from `s50` (lightest) to
+/// `s950` (darkest), with `s500` as the seed/middle.
+///
+/// Using an enum instead of a raw `int` makes invalid steps (e.g. `650`)
+/// impossible at compile time. Read the numeric step via [value].
+enum NixtShade {
+  /// Lightest — 50.
+  s50(50),
+
+  /// 100.
+  s100(100),
+
+  /// 200.
+  s200(200),
+
+  /// 300.
+  s300(300),
+
+  /// 400.
+  s400(400),
+
+  /// Seed / middle — 500.
+  s500(500),
+
+  /// 600.
+  s600(600),
+
+  /// 700.
+  s700(700),
+
+  /// 800.
+  s800(800),
+
+  /// 900.
+  s900(900),
+
+  /// Darkest — 950.
+  s950(950);
+
+  const NixtShade(this.value);
+
+  /// The numeric step (50, 100, … 950).
+  final int value;
+}
+
 /// A single color scale (shades `50` through `950`), mirroring the raw
 /// Tailwind/Nuxt palette steps from the design system's `palette.css`.
 ///
@@ -12,10 +57,15 @@ class NixtColorScale {
   final Map<int, Color> _shades;
 
   /// Builds a full 50→950 scale from a single [seed] color, used as shade
-  /// `500`. Lighter shades blend toward white, darker shades toward black —
-  /// enough fidelity to retheme a role (e.g. a custom brand color) while
-  /// preserving the design system's "lighten one step in dark mode" behavior.
-  factory NixtColorScale.fromSeed(Color seed) {
+  /// `500` (the middle of the ruler). Lighter shades (down to `50`) blend toward
+  /// white; darker shades (up to `950`) blend toward black — enough fidelity to
+  /// retheme a role from one brand color while preserving the design system's
+  /// "lighten one step in dark mode" behavior.
+  ///
+  /// Pass [overrides] to replace specific generated shades — the rest stay
+  /// derived from [seed]. This lets a user tune one or two steps (e.g. a
+  /// punchier `s900`) without hand-authoring the whole scale.
+  factory NixtColorScale.fromSeed(Color seed, {Map<NixtShade, Color>? overrides}) {
     const white = Color(0xFFFFFFFF);
     const black = Color(0xFF000000);
     Color toWhite(double f) => Color.lerp(seed, white, f)!;
@@ -32,11 +82,13 @@ class NixtColorScale {
       800: toBlack(0.40),
       900: toBlack(0.53),
       950: toBlack(0.70),
+      if (overrides != null)
+        for (final e in overrides.entries) e.key.value: e.value,
     });
   }
 
-  /// Returns the color for [step] (one of 50, 100, 200 … 950).
-  Color shade(int step) => _shades[step]!;
+  /// Returns the color for [step].
+  Color shade(NixtShade step) => _shades[step.value]!;
 
   /// Lightest shade.
   Color get s50 => _shades[50]!;
