@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import '../../theme/nixt_theme.dart';
 import '../../tokens/color_roles.dart';
 import '../../tokens/typography_tokens.dart';
+import 'control_common.dart';
 
 /// A star rating — interactive (pass [onChanged]) or a read-only display.
 ///
@@ -20,6 +21,7 @@ class NixtRating extends StatelessWidget {
   const NixtRating({
     required this.value,
     this.onChanged,
+    this.label,
     this.max = 5,
     this.starSize = 24,
     this.color = NixtColorRole.warning,
@@ -30,6 +32,9 @@ class NixtRating extends StatelessWidget {
 
   /// Current rating (may be fractional for display).
   final double value;
+
+  /// Optional label rendered above the stars.
+  final String? label;
 
   /// Called with the 1-based star index on tap. Implies interactive.
   final ValueChanged<int>? onChanged;
@@ -58,37 +63,41 @@ class NixtRating extends StatelessWidget {
     final interactive = !readOnly && onChanged != null;
     final rounded = value.round();
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (var i = 1; i <= max; i++) ...[
-          if (i > 1) const SizedBox(width: 3),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: interactive ? () => onChanged!(i) : null,
-            child: CustomPaint(
-              size: Size.square(starSize),
-              painter: _StarPainter(
-                filled: i <= rounded,
-                fill: accent,
-                empty: c.bgAccented,
+    return NixtFieldLabel(
+      colors: c,
+      label: label,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (var i = 1; i <= max; i++) ...[
+            if (i > 1) const SizedBox(width: 3),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: interactive ? () => onChanged!(i) : null,
+              child: CustomPaint(
+                size: Size.square(starSize),
+                painter: _StarPainter(
+                  filled: i <= rounded,
+                  fill: accent,
+                  empty: c.bgAccented,
+                ),
               ),
             ),
-          ),
-        ],
-        if (showValue) ...[
-          const SizedBox(width: 8),
-          Text(
-            value.toStringAsFixed(1),
-            style: TextStyle(
-              fontFamily: NixtTypography.fontMono,
-              fontSize: NixtTypography.textSm,
-              fontWeight: NixtTypography.weightSemibold,
-              color: c.textToned,
+          ],
+          if (showValue) ...[
+            const SizedBox(width: 8),
+            Text(
+              value.toStringAsFixed(1),
+              style: TextStyle(
+                fontFamily: NixtTypography.fontMono,
+                fontSize: NixtTypography.textSm,
+                fontWeight: NixtTypography.weightSemibold,
+                color: c.textToned,
+              ),
             ),
-          ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }

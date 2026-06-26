@@ -5,6 +5,7 @@ import '../../theme/nixt_theme.dart';
 import '../../tokens/color_roles.dart';
 import '../../tokens/typography_tokens.dart';
 import '../icon/nixt_icon.dart';
+import 'control_common.dart';
 import 'field_shell.dart';
 
 /// A search field tuned for mobile. By default it looks exactly like
@@ -27,6 +28,7 @@ class NixtSearchBar extends StatefulWidget {
     this.onChanged,
     this.onClear,
     this.onCancel,
+    this.label,
     this.hintText = 'Search',
     this.size = NixtFieldSize.md,
     this.variant = NixtFieldVariant.outline,
@@ -49,6 +51,9 @@ class NixtSearchBar extends StatefulWidget {
 
   /// Called when the iOS "Cancel" button is tapped.
   final VoidCallback? onCancel;
+
+  /// Optional label rendered above the field. Scales with [size].
+  final String? label;
 
   /// Placeholder text.
   final String hintText;
@@ -186,28 +191,34 @@ class _NixtSearchBarState extends State<NixtSearchBar> {
       ),
     );
 
-    return Opacity(
-      opacity: widget.enabled ? 1 : 0.5,
-      child: Row(
-        children: [
-          Expanded(child: field),
-          if (showCancel)
-            GestureDetector(
-              onTap: _cancel,
-              behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                    fontFamily: NixtTypography.fontSans,
-                    fontSize: NixtTypography.textBase,
-                    color: accent,
+    return NixtFieldLabel(
+      colors: c,
+      label: widget.label,
+      fontSize: widget.size.labelSize,
+      gap: widget.size.labelGap,
+      child: Opacity(
+        opacity: widget.enabled ? 1 : 0.5,
+        child: Row(
+          children: [
+            Expanded(child: field),
+            if (showCancel)
+              GestureDetector(
+                onTap: _cancel,
+                behavior: HitTestBehavior.opaque,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      fontFamily: NixtTypography.fontSans,
+                      fontSize: NixtTypography.textBase,
+                      color: accent,
+                    ),
                   ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

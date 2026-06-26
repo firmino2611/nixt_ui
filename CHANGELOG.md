@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.5.0
+
+Optional field labels across the form family.
+
+### Added
+- **`label`** on every form-field component that lacked one: `NixtInput`
+  (already had it), `NixtTextarea`, `NixtSearchBar`, `NixtSelect`,
+  `NixtMultiSelect`, `NixtStepper`, `NixtRating`, `NixtPinInput`, and
+  `NixtCalendar`. The label renders above the control, paints in the error color
+  when the field is errored, and scales with the field/control size where one
+  exists.
+- **`NixtFieldLabel`** — the shared widget behind the `label` parameter,
+  exported for building custom labeled controls.
+
+Toggle controls (`NixtCheckbox`, `NixtRadio`, `NixtSwitch`) and `NixtSlider`
+already expose their own `label`/`description` and are unchanged.
+
 ## 0.4.0
 
 Color-system overhaul, automatic contrast, and a new indicator component.

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../theme/nixt_theme.dart';
 import '../../tokens/color_roles.dart';
 import '../../tokens/typography_tokens.dart';
+import 'control_common.dart';
 
 /// An OTP / PIN entry — [length] single-character boxes with auto-advance and
 /// backspace-to-previous. Controlled via [value] and [onChanged].
@@ -22,6 +23,7 @@ class NixtPinInput extends StatefulWidget {
     required this.value,
     this.onChanged,
     this.onCompleted,
+    this.label,
     this.length = 4,
     this.obscure = false,
     this.color = NixtColorRole.primary,
@@ -39,6 +41,9 @@ class NixtPinInput extends StatefulWidget {
 
   /// Called once when all boxes are filled.
   final ValueChanged<String>? onCompleted;
+
+  /// Optional label rendered above the boxes.
+  final String? label;
 
   /// Number of boxes.
   final int length;
@@ -143,71 +148,75 @@ class _NixtPinInputState extends State<NixtPinInput> {
         ? c.textHighlighted
         : c.role(widget.color);
 
-    return Opacity(
-      opacity: widget.enabled ? 1 : 0.5,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (var i = 0; i < widget.length; i++) ...[
-            if (i > 0) const SizedBox(width: 10),
-            SizedBox(
-              width: 48,
-              height: 56,
-              child: Focus(
-                onKeyEvent: (_, e) {
-                  _onKey(i, e);
-                  return KeyEventResult.ignored;
-                },
-                child: TextField(
-                  controller: _ctrls[i],
-                  focusNode: _nodes[i],
-                  enabled: widget.enabled,
-                  autofocus: widget.autofocus && i == 0,
-                  obscureText: widget.obscure,
-                  keyboardType: widget.keyboardType,
-                  textAlign: TextAlign.center,
-                  maxLength: 1,
-                  cursorColor: accent,
-                  onChanged: (v) => _onChanged(i, v),
-                  onTap: () => _ctrls[i].selection = TextSelection(
-                    baseOffset: 0,
-                    extentOffset: _ctrls[i].text.length,
-                  ),
-                  style: TextStyle(
-                    fontFamily: NixtTypography.fontMono,
-                    fontSize: NixtTypography.text2xl,
-                    fontWeight: NixtTypography.weightSemibold,
-                    color: c.textHighlighted,
-                  ),
-                  decoration: InputDecoration(
-                    counterText: '',
-                    filled: true,
-                    fillColor: c.bg,
-                    contentPadding: EdgeInsets.zero,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: t.radius.brLg,
-                      borderSide: BorderSide(
-                        color: _ctrls[i].text.isNotEmpty
-                            ? accent
-                            : c.borderAccented,
-                        width: 1.5,
+    return NixtFieldLabel(
+      colors: c,
+      label: widget.label,
+      child: Opacity(
+        opacity: widget.enabled ? 1 : 0.5,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (var i = 0; i < widget.length; i++) ...[
+              if (i > 0) const SizedBox(width: 10),
+              SizedBox(
+                width: 48,
+                height: 56,
+                child: Focus(
+                  onKeyEvent: (_, e) {
+                    _onKey(i, e);
+                    return KeyEventResult.ignored;
+                  },
+                  child: TextField(
+                    controller: _ctrls[i],
+                    focusNode: _nodes[i],
+                    enabled: widget.enabled,
+                    autofocus: widget.autofocus && i == 0,
+                    obscureText: widget.obscure,
+                    keyboardType: widget.keyboardType,
+                    textAlign: TextAlign.center,
+                    maxLength: 1,
+                    cursorColor: accent,
+                    onChanged: (v) => _onChanged(i, v),
+                    onTap: () => _ctrls[i].selection = TextSelection(
+                      baseOffset: 0,
+                      extentOffset: _ctrls[i].text.length,
+                    ),
+                    style: TextStyle(
+                      fontFamily: NixtTypography.fontMono,
+                      fontSize: NixtTypography.text2xl,
+                      fontWeight: NixtTypography.weightSemibold,
+                      color: c.textHighlighted,
+                    ),
+                    decoration: InputDecoration(
+                      counterText: '',
+                      filled: true,
+                      fillColor: c.bg,
+                      contentPadding: EdgeInsets.zero,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: t.radius.brLg,
+                        borderSide: BorderSide(
+                          color: _ctrls[i].text.isNotEmpty
+                              ? accent
+                              : c.borderAccented,
+                          width: 1.5,
+                        ),
                       ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: t.radius.brLg,
-                      borderSide: BorderSide(color: accent, width: 1.5),
-                    ),
-                    disabledBorder: OutlineInputBorder(
-                      borderRadius: t.radius.brLg,
-                      borderSide:
-                          BorderSide(color: c.borderAccented, width: 1.5),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: t.radius.brLg,
+                        borderSide: BorderSide(color: accent, width: 1.5),
+                      ),
+                      disabledBorder: OutlineInputBorder(
+                        borderRadius: t.radius.brLg,
+                        borderSide:
+                            BorderSide(color: c.borderAccented, width: 1.5),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

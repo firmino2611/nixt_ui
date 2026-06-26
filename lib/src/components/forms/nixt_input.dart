@@ -4,6 +4,7 @@ import '../../theme/nixt_theme.dart';
 import '../../tokens/color_roles.dart';
 import '../../tokens/typography_tokens.dart';
 import '../icon/nixt_icon.dart';
+import 'control_common.dart';
 import 'field_shell.dart';
 
 /// A single-line text field, styled to the design system. Built on a native
@@ -143,7 +144,8 @@ class _NixtInputState extends State<NixtInput> {
       child: Row(
         children: [
           if (widget.icon != null) ...[
-            NixtIcon(widget.icon!, size: widget.size.iconSize, color: c.textDimmed),
+            NixtIcon(widget.icon!,
+                size: widget.size.iconSize, color: c.textDimmed),
             SizedBox(width: widget.size.gap),
           ],
           Expanded(
@@ -176,7 +178,8 @@ class _NixtInputState extends State<NixtInput> {
           ),
           if (widget.trailingIcon != null) ...[
             SizedBox(width: widget.size.gap),
-            NixtIcon(widget.trailingIcon!, size: widget.size.iconSize, color: c.textDimmed),
+            NixtIcon(widget.trailingIcon!,
+                size: widget.size.iconSize, color: c.textDimmed),
           ],
         ],
       ),
@@ -184,40 +187,34 @@ class _NixtInputState extends State<NixtInput> {
 
     final shell = Opacity(opacity: widget.enabled ? 1 : 0.5, child: field);
 
-    if (!errored && widget.label == null) return shell;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (widget.label != null) ...[
-          Padding(
-            padding: const EdgeInsets.only(left: 2),
-            child: Text(
-              widget.label!,
-              style: TextStyle(
-                fontFamily: NixtTypography.fontSans,
-                fontSize: widget.size.labelSize,
-                fontWeight: NixtTypography.weightMedium,
-                color: errored ? c.error : c.text,
+    final body = !errored
+        ? shell
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              shell,
+              Padding(
+                padding: const EdgeInsets.only(top: 6, left: 2),
+                child: Text(
+                  widget.errorText!,
+                  style: TextStyle(
+                    fontFamily: NixtTypography.fontSans,
+                    fontSize: NixtTypography.textXs,
+                    color: c.error,
+                  ),
+                ),
               ),
-            ),
-          ),
-          SizedBox(height: widget.size.labelGap),
-        ],
-        shell,
-        if (errored)
-          Padding(
-            padding: const EdgeInsets.only(top: 6, left: 2),
-            child: Text(
-              widget.errorText!,
-              style: TextStyle(
-                fontFamily: NixtTypography.fontSans,
-                fontSize: NixtTypography.textXs,
-                color: c.error,
-              ),
-            ),
-          ),
-      ],
+            ],
+          );
+
+    return NixtFieldLabel(
+      colors: c,
+      label: widget.label,
+      fontSize: widget.size.labelSize,
+      gap: widget.size.labelGap,
+      errored: errored,
+      child: body,
     );
   }
 }

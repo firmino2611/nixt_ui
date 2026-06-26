@@ -8,6 +8,7 @@ import '../../tokens/color_roles.dart';
 import '../../tokens/radius_tokens.dart';
 import '../../tokens/typography_tokens.dart';
 import '../icon/nixt_icon.dart';
+import 'control_common.dart';
 import 'field_shell.dart';
 
 /// One option in a [NixtSelect] or [NixtMultiSelect].
@@ -47,6 +48,7 @@ class NixtSelect extends StatefulWidget {
     required this.items,
     this.value,
     this.onChanged,
+    this.label,
     this.placeholder,
     this.size = NixtFieldSize.md,
     this.variant = NixtFieldVariant.outline,
@@ -66,6 +68,9 @@ class NixtSelect extends StatefulWidget {
 
   /// Change callback. A `null` callback disables the control.
   final ValueChanged<String?>? onChanged;
+
+  /// Optional label rendered above the field. Scales with [size].
+  final String? label;
 
   /// Placeholder shown when nothing is selected.
   final String? placeholder;
@@ -112,29 +117,36 @@ class _NixtSelectState extends State<NixtSelect> {
   @override
   Widget build(BuildContext context) {
     final interactive = widget.enabled && widget.onChanged != null;
-    String? label;
+    String? selectedLabel;
     for (final i in widget.items) {
       if (i.value == widget.value) {
-        label = i.label;
+        selectedLabel = i.label;
         break;
       }
     }
-    return _SelectField(
-      controller: _ctrl,
-      enabled: widget.enabled,
-      interactive: interactive,
-      size: widget.size,
-      variant: widget.variant,
-      color: widget.color,
-      icon: widget.icon,
+    return NixtFieldLabel(
+      colors: NixtTheme.of(context).colors,
+      label: widget.label,
+      fontSize: widget.size.labelSize,
+      gap: widget.size.labelGap,
       errored: widget.errorText != null,
-      text: label ?? widget.placeholder ?? '',
-      isPlaceholder: label == null,
-      items: widget.items,
-      selectedValues: widget.value == null ? const {} : {widget.value!},
-      multiple: false,
-      menuMaxHeight: widget.menuMaxHeight,
-      onPick: _pick,
+      child: _SelectField(
+        controller: _ctrl,
+        enabled: widget.enabled,
+        interactive: interactive,
+        size: widget.size,
+        variant: widget.variant,
+        color: widget.color,
+        icon: widget.icon,
+        errored: widget.errorText != null,
+        text: selectedLabel ?? widget.placeholder ?? '',
+        isPlaceholder: selectedLabel == null,
+        items: widget.items,
+        selectedValues: widget.value == null ? const {} : {widget.value!},
+        multiple: false,
+        menuMaxHeight: widget.menuMaxHeight,
+        onPick: _pick,
+      ),
     );
   }
 }
@@ -160,6 +172,7 @@ class NixtMultiSelect extends StatefulWidget {
     required this.items,
     this.values = const [],
     this.onChanged,
+    this.label,
     this.placeholder,
     this.size = NixtFieldSize.md,
     this.variant = NixtFieldVariant.outline,
@@ -179,6 +192,9 @@ class NixtMultiSelect extends StatefulWidget {
 
   /// Change callback with the full new selection. A `null` callback disables.
   final ValueChanged<List<String>>? onChanged;
+
+  /// Optional label rendered above the field. Scales with [size].
+  final String? label;
 
   /// Placeholder shown when nothing is selected.
   final String? placeholder;
@@ -252,22 +268,29 @@ class _NixtMultiSelectState extends State<NixtMultiSelect> {
   @override
   Widget build(BuildContext context) {
     final interactive = widget.enabled && widget.onChanged != null;
-    return _SelectField(
-      controller: _ctrl,
-      enabled: widget.enabled,
-      interactive: interactive,
-      size: widget.size,
-      variant: widget.variant,
-      color: widget.color,
-      icon: widget.icon,
+    return NixtFieldLabel(
+      colors: NixtTheme.of(context).colors,
+      label: widget.label,
+      fontSize: widget.size.labelSize,
+      gap: widget.size.labelGap,
       errored: widget.errorText != null,
-      text: _summary(),
-      isPlaceholder: widget.values.isEmpty,
-      items: widget.items,
-      selectedValues: widget.values.toSet(),
-      multiple: true,
-      menuMaxHeight: widget.menuMaxHeight,
-      onPick: _toggle,
+      child: _SelectField(
+        controller: _ctrl,
+        enabled: widget.enabled,
+        interactive: interactive,
+        size: widget.size,
+        variant: widget.variant,
+        color: widget.color,
+        icon: widget.icon,
+        errored: widget.errorText != null,
+        text: _summary(),
+        isPlaceholder: widget.values.isEmpty,
+        items: widget.items,
+        selectedValues: widget.values.toSet(),
+        multiple: true,
+        menuMaxHeight: widget.menuMaxHeight,
+        onPick: _toggle,
+      ),
     );
   }
 }

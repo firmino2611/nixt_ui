@@ -9,6 +9,7 @@ import '../../tokens/palette.dart';
 import '../../tokens/typography_tokens.dart';
 import '../buttons/nixt_button.dart';
 import '../buttons/nixt_icon_button.dart';
+import 'control_common.dart';
 
 const List<String> _kMonths = <String>[
   'January',
@@ -45,9 +46,13 @@ class NixtCalendar extends StatefulWidget {
   const NixtCalendar({
     this.value,
     this.onChanged,
+    this.label,
     this.color = NixtColorRole.primary,
     super.key,
   });
+
+  /// Optional label rendered above the calendar.
+  final String? label;
 
   /// The currently selected day. `null` selects nothing.
   final DateTime? value;
@@ -124,83 +129,88 @@ class _NixtCalendarState extends State<NixtCalendar> {
       cells.add(null);
     }
 
-    return DefaultTextStyle(
-      style: TextStyle(fontFamily: NixtTypography.fontSans, color: c.text),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // ---- Header ----
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '${_kMonths[_month]} $_year',
-                    style: TextStyle(
-                      fontSize: NixtTypography.textBase,
-                      fontWeight: NixtTypography.weightBold,
-                      color: c.textHighlighted,
-                    ),
-                  ),
-                ),
-                NixtIconButton(
-                  icon: NixtIcons.chevronLeft,
-                  label: 'Previous month',
-                  size: NixtButtonSize.sm,
-                  onPressed: () => _shift(-1),
-                ),
-                const SizedBox(width: 2),
-                NixtIconButton(
-                  icon: NixtIcons.chevronRight,
-                  label: 'Next month',
-                  size: NixtButtonSize.sm,
-                  onPressed: () => _shift(1),
-                ),
-              ],
-            ),
-          ),
-          // ---- Weekday labels ----
-          Row(
-            children: [
-              for (final wd in _kWeekdays)
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
+    return NixtFieldLabel(
+      colors: c,
+      label: widget.label,
+      child: DefaultTextStyle(
+        style: TextStyle(fontFamily: NixtTypography.fontSans, color: c.text),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // ---- Header ----
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                children: [
+                  Expanded(
                     child: Text(
-                      wd,
-                      textAlign: TextAlign.center,
+                      '${_kMonths[_month]} $_year',
                       style: TextStyle(
-                        fontSize: NixtTypography.text2xs,
-                        fontWeight: NixtTypography.weightSemibold,
-                        color: c.textDimmed,
+                        fontSize: NixtTypography.textBase,
+                        fontWeight: NixtTypography.weightBold,
+                        color: c.textHighlighted,
                       ),
                     ),
                   ),
-                ),
-            ],
-          ),
-          // ---- Day grid ----
-          for (var row = 0; row < cells.length; row += 7)
+                  NixtIconButton(
+                    icon: NixtIcons.chevronLeft,
+                    label: 'Previous month',
+                    size: NixtButtonSize.sm,
+                    onPressed: () => _shift(-1),
+                  ),
+                  const SizedBox(width: 2),
+                  NixtIconButton(
+                    icon: NixtIcons.chevronRight,
+                    label: 'Next month',
+                    size: NixtButtonSize.sm,
+                    onPressed: () => _shift(1),
+                  ),
+                ],
+              ),
+            ),
+            // ---- Weekday labels ----
             Row(
               children: [
-                for (var col = 0; col < 7; col++)
+                for (final wd in _kWeekdays)
                   Expanded(
-                    child: _DayCell(
-                      day: cells[row + col],
-                      selected: _isSame(cells[row + col] ?? -1, widget.value),
-                      isToday: _isSame(cells[row + col] ?? -1, today),
-                      accent: accent,
-                      colors: c,
-                      onTap: widget.onChanged == null
-                          ? null
-                          : (d) => widget.onChanged!(DateTime(_year, _month + 1, d)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        wd,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: NixtTypography.text2xs,
+                          fontWeight: NixtTypography.weightSemibold,
+                          color: c.textDimmed,
+                        ),
+                      ),
                     ),
                   ),
               ],
             ),
-        ],
+            // ---- Day grid ----
+            for (var row = 0; row < cells.length; row += 7)
+              Row(
+                children: [
+                  for (var col = 0; col < 7; col++)
+                    Expanded(
+                      child: _DayCell(
+                        day: cells[row + col],
+                        selected: _isSame(cells[row + col] ?? -1, widget.value),
+                        isToday: _isSame(cells[row + col] ?? -1, today),
+                        accent: accent,
+                        colors: c,
+                        onTap: widget.onChanged == null
+                            ? null
+                            : (d) => widget
+                                .onChanged!(DateTime(_year, _month + 1, d)),
+                      ),
+                    ),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -226,7 +236,9 @@ class _DayCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = colors;
-    if (day == null) return const AspectRatio(aspectRatio: 1, child: SizedBox());
+    if (day == null) {
+      return const AspectRatio(aspectRatio: 1, child: SizedBox());
+    }
 
     final fg = selected ? NixtPalette.white : c.text;
     final cell = AspectRatio(

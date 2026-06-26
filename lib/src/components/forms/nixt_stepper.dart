@@ -19,6 +19,7 @@ class NixtStepper extends StatelessWidget {
   const NixtStepper({
     required this.value,
     this.onChanged,
+    this.label,
     this.min = -9007199254740991,
     this.max = 9007199254740991,
     this.step = 1,
@@ -31,6 +32,9 @@ class NixtStepper extends StatelessWidget {
 
   /// Current value.
   final int value;
+
+  /// Optional label rendered above the control. Scales with [size].
+  final String? label;
 
   /// Change callback. A `null` callback disables the control.
   final ValueChanged<int>? onChanged;
@@ -95,41 +99,52 @@ class NixtStepper extends StatelessWidget {
       );
     }
 
-    return Opacity(
-      opacity: enabled ? 1 : 0.5,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          btn(NixtIcons.minus, value <= min, () => set(value - step)),
-          const SizedBox(width: 4),
-          SizedBox(
-            width: m.w,
-            child: Text.rich(
-              TextSpan(
-                text: '$value',
-                children: [
-                  if (suffix != null)
-                    TextSpan(
-                      text: ' $suffix',
-                      style: TextStyle(
-                        fontSize: m.fs * 0.75,
-                        color: c.textMuted,
+    final labelSize = switch (size) {
+      NixtControlSize.sm => NixtTypography.textXs,
+      NixtControlSize.md => NixtTypography.textSm,
+      NixtControlSize.lg => NixtTypography.textBase,
+    };
+
+    return NixtFieldLabel(
+      colors: c,
+      label: label,
+      fontSize: labelSize,
+      child: Opacity(
+        opacity: enabled ? 1 : 0.5,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            btn(NixtIcons.minus, value <= min, () => set(value - step)),
+            const SizedBox(width: 4),
+            SizedBox(
+              width: m.w,
+              child: Text.rich(
+                TextSpan(
+                  text: '$value',
+                  children: [
+                    if (suffix != null)
+                      TextSpan(
+                        text: ' $suffix',
+                        style: TextStyle(
+                          fontSize: m.fs * 0.75,
+                          color: c.textMuted,
+                        ),
                       ),
-                    ),
-                ],
-              ),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: NixtTypography.fontMono,
-                fontSize: m.fs,
-                fontWeight: NixtTypography.weightSemibold,
-                color: c.textHighlighted,
+                  ],
+                ),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: NixtTypography.fontMono,
+                  fontSize: m.fs,
+                  fontWeight: NixtTypography.weightSemibold,
+                  color: c.textHighlighted,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 4),
-          btn(NixtIcons.plus, value >= max, () => set(value + step)),
-        ],
+            const SizedBox(width: 4),
+            btn(NixtIcons.plus, value >= max, () => set(value + step)),
+          ],
+        ),
       ),
     );
   }

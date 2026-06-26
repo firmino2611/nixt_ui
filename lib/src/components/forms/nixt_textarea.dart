@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../theme/nixt_theme.dart';
 import '../../tokens/color_roles.dart';
 import '../../tokens/typography_tokens.dart';
+import 'control_common.dart';
 import 'field_shell.dart';
 
 /// A multi-line text field, sharing the field shell with [NixtInput].
@@ -15,6 +16,7 @@ class NixtTextarea extends StatefulWidget {
   const NixtTextarea({
     this.controller,
     this.onChanged,
+    this.label,
     this.hintText,
     this.rows = 4,
     this.variant = NixtFieldVariant.outline,
@@ -30,6 +32,9 @@ class NixtTextarea extends StatefulWidget {
 
   /// Change callback.
   final ValueChanged<String>? onChanged;
+
+  /// Optional label rendered above the field.
+  final String? label;
 
   /// Placeholder text.
   final String? hintText;
@@ -85,41 +90,46 @@ class _NixtTextareaState extends State<NixtTextarea> {
     final errored = widget.errorText != null;
     final accent = NixtFieldShell.accent(c, widget.color);
 
-    return Opacity(
-      opacity: widget.enabled ? 1 : 0.5,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        curve: Curves.easeOut,
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: NixtFieldShell.resolve(
-          colors: c,
-          radius: t.radius,
-          variant: widget.variant,
-          accentColor: accent,
-          focused: _focused,
-          errored: errored,
-        ),
-        child: TextField(
-          controller: widget.controller,
-          focusNode: _node,
-          enabled: widget.enabled,
-          onChanged: widget.onChanged,
-          minLines: widget.rows,
-          maxLines: null,
-          keyboardType: TextInputType.multiline,
-          cursorColor: accent,
-          style: TextStyle(
-            fontFamily: NixtTypography.fontSans,
-            fontSize: NixtTypography.textBase,
-            height: NixtTypography.leadingNormal,
-            color: c.textHighlighted,
+    return NixtFieldLabel(
+      colors: c,
+      label: widget.label,
+      errored: errored,
+      child: Opacity(
+        opacity: widget.enabled ? 1 : 0.5,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeOut,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          decoration: NixtFieldShell.resolve(
+            colors: c,
+            radius: t.radius,
+            variant: widget.variant,
+            accentColor: accent,
+            focused: _focused,
+            errored: errored,
           ),
-          decoration: InputDecoration.collapsed(
-            hintText: widget.hintText,
-            hintStyle: TextStyle(
+          child: TextField(
+            controller: widget.controller,
+            focusNode: _node,
+            enabled: widget.enabled,
+            onChanged: widget.onChanged,
+            minLines: widget.rows,
+            maxLines: null,
+            keyboardType: TextInputType.multiline,
+            cursorColor: accent,
+            style: TextStyle(
               fontFamily: NixtTypography.fontSans,
               fontSize: NixtTypography.textBase,
-              color: c.textDimmed,
+              height: NixtTypography.leadingNormal,
+              color: c.textHighlighted,
+            ),
+            decoration: InputDecoration.collapsed(
+              hintText: widget.hintText,
+              hintStyle: TextStyle(
+                fontFamily: NixtTypography.fontSans,
+                fontSize: NixtTypography.textBase,
+                color: c.textDimmed,
+              ),
             ),
           ),
         ),

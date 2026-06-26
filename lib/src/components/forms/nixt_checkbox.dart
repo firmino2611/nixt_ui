@@ -81,7 +81,8 @@ class NixtCheckbox extends StatelessWidget {
         ),
       ),
       child: value
-          ? NixtIcon(NixtIcons.check, size: _box - 6, color: nixtOnColor(accent))
+          ? NixtIcon(NixtIcons.check,
+              size: _box - 6, color: nixtOnColor(accent))
           : null,
     );
 
